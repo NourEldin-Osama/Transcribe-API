@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundCloud Link Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>SoundCloud Link Status</h1>
+        <table class="table table-striped" id="status-table">
+            <thead>
+                <tr>
+                    <th>Link</th>
+                    <th>Status</th>
+                    <th>Download Transcript</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function fetchStatuses() {
+            $.ajax({
+                type: 'GET',
+                url: '/soundcloud-links/',
+                success: function(response) {
+                    const tbody = $('#status-table tbody');
+                    tbody.empty();
+                    response.forEach(link => {
+                        const row = `
+                            <tr>
+                                <td>${link.url}</td>
+                                <td>${link.status}</td>
+                                <td>${link.status === 'finished' ? '<a href="' + link.word_file_path + '" class="btn btn-success">Download</a>' : 'N/A'}</td>
+                            </tr>
+                        `;
+                        tbody.append(row);
+                    });
+                }
+            });
+        }
+
+        // Fetch the statuses every 5 seconds
+        setInterval(fetchStatuses, 5000);
+        fetchStatuses();
+    </script>
+</body>
+</html>
