@@ -1,0 +1,6 @@
+fastapi[all]
+sqlmodel
+httpx
+beautifulsoup4
+rich
+python-docx
